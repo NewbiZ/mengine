@@ -28,7 +28,7 @@ INCLUDE_DIRECTORIES(${CMAKE_BINARY_DIR}/include)
 IF(APPLE)
     SET(CMAKE_CXX_FLAGS "-std=c++11 -stdlib=libc++")
 ELSEIF(LINUX)
-    SET(CMAKE_CXX_FLAGS "-std=gnu++0x")
+    SET(CMAKE_CXX_FLAGS "-std=c++11")
 ENDIF(APPLE)
 
 # Match everything except the entry point
