@@ -1,0 +1,11 @@
+#ifndef MENGINE_CONFIG_H
+#define MENGINE_CONFIG_H
+
+namespace mengine
+{
+
+static const char* version = "@MENGINE_VERSION_MAJOR@.@MENGINE_VERSION_MINOR@.@MENGINE_VERSION_PATCH@";
+
+}
+
+#endif // MENGINE_CONFIG_H
