@@ -25,7 +25,11 @@ INCLUDE_DIRECTORIES(${CMAKE_BINARY_DIR}/include)
 
 # =============== MAIN OBJECTS ===================
 # Enable C++11 support
-set(CMAKE_CXX_FLAGS "-std=c++11 -stdlib=libc++")
+IF(APPLE)
+    SET(CMAKE_CXX_FLAGS "-std=c++11 -stdlib=libc++")
+ELSEIF(LINUX)
+    SET(CMAKE_CXX_FLAGS "-std=gnu++0x")
+ENDIF(APPLE)
 
 # Match everything except the entry point
 FILE(GLOB_RECURSE MENGINE_SOURCES src/*/*.cpp)
