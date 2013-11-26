@@ -57,21 +57,6 @@ ADD_SUBDIRECTORY(tests)
 OPTION(BUILD_PYTHON "Build Python 3 bindings" OFF)
 
 IF (BUILD_PYTHON)
-    FIND_PACKAGE(PYTHON3 3.3 REQUIRED)
-
-    SET(PYMENGINE_SOURCES python/mengine.cpp)
-
-    INCLUDE_DIRECTORIES(${PYTHON3_INCLUDE_DIRS})
-
-    ADD_LIBRARY(pymengine SHARED $<TARGET_OBJECTS:mengine_objects>
-                                      ${PYMENGINE_SOURCES})
-
-    TARGET_LINK_LIBRARIES(pymengine ${PYTHON3_LDFLAGS}
-                                         ${GLFW_LIBRARY}
-                                         ${OPENGL_LIBRARIES})
-    IF(APPLE OR LINUX)
-        SET_PROPERTY(TARGET pymengine PROPERTY PREFIX "_")
-        SET_PROPERTY(TARGET pymengine PROPERTY SUFFIX ".so")
-    ENDIF()
+    ADD_SUBDIRECTORY(python)
 ENDIF(BUILD_PYTHON)
 
