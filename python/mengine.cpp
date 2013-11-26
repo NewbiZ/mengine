@@ -17,6 +17,10 @@ typedef struct PyMemberDef {
 
 void pymengine_HandleError()
 {
+  PyObject* type = PyErr_Occurred();
+  if (type!=0)
+    PyErr_Print();
+  exit(1);
 }
 
 // ====================
@@ -32,24 +36,69 @@ public:
 public:
   virtual bool setup()
   {
+    bool r = false;
     if (PyObject_HasAttrString(self_, "setup"))
     {
-      PyObject* result = PyObject_CallMethod(self_, "setup", "");
-      if (result == 0)
-      {
+      PyObject* result = PyObject_CallMethod(self_, (char*)"setup", (char*)"");
+      if (result==0)
         pymengine_HandleError();
-      }
+      r = PyObject_IsTrue(result);
     }
     else
-    {
-      self_->setup();
-    }
+      r = this->setup();
+    return r;
   }
 
-  virtual bool cleanup();
-  virtual void handle_events();
-  virtual void update(double time_delta);
-  virtual void render();
+  virtual bool cleanup()
+  {
+    bool r = false;
+    if (PyObject_HasAttrString(self_, "cleanup"))
+    {
+      PyObject* result = PyObject_CallMethod(self_, (char*)"cleanup", (char*)"");
+      if (result==0)
+        pymengine_HandleError();
+      r = PyObject_IsTrue(result);
+    }
+    else
+      r = this->cleanup();
+    return r;
+  }
+
+  virtual void handle_events()
+  {
+    if (PyObject_HasAttrString(self_, "cleanup"))
+    {
+      PyObject* result = PyObject_CallMethod(self_, (char*)"cleanup", (char*)"");
+      if (result==0)
+        pymengine_HandleError();
+    }
+    else
+      this->cleanup();
+  }
+
+  virtual void update(double time_delta)
+  {
+    if (PyObject_HasAttrString(self_, "update"))
+    {
+      PyObject* result = PyObject_CallMethod(self_, (char*)"update", (char*)"d", time_delta);
+      if (result==0)
+        pymengine_HandleError();
+    }
+    else
+      this->cleanup();
+  }
+
+  virtual void render()
+  {
+    if (PyObject_HasAttrString(self_, "render"))
+    {
+      PyObject* result = PyObject_CallMethod(self_, (char*)"render", (char*)"");
+      if (result==0)
+        pymengine_HandleError();
+    }
+    else
+      this->render();
+  }
 
 private:
   PyObject* self_;
@@ -58,7 +107,7 @@ private:
 typedef struct
 {
   PyObject_HEAD
-  mengine::Scene* w_scene_;
+  PySceneWrapper* w_scene_;
 } pymengine_SceneObject;
 
 static PyMemberDef pymengine_SceneObject_members[] = {
@@ -72,9 +121,7 @@ static PyObject* pymengine_SceneObject_new(PyTypeObject* type, PyObject* args, P
   self = (pymengine_SceneObject*)type->tp_alloc(type, 0);
 
   if (self != 0)
-  {
     self->w_scene_ = new mengine::Scene();
-  }
 
   return (PyObject*)self;
 }
