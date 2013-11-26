@@ -14,3 +14,11 @@ IF(APPLE OR LINUX)
     SET_PROPERTY(TARGET pymengine PROPERTY PREFIX "_")
     SET_PROPERTY(TARGET pymengine PROPERTY SUFFIX ".so")
 ENDIF()
+
+# Copy tests to output directory
+#FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/tests
+#          DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+# Copy examples to output directory
+FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/examples
+          DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
