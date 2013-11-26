@@ -8,7 +8,7 @@ Dependencies
 ------------
 - `libglfw >=2.7.7`
 - `CMake >=2.8.8`
-- `Python >=3.3` (only for python bindings with ``-DBUILD_PYTHON=ON`)
+- `Python >=3.3` (only for python bindings with `-DBUILD_PYTHON=ON`)
 
 Instructions
 ------------
