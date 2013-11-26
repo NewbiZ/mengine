@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
-# Copy test date to output directory
+# Copy test data to output directory
 FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/data
           DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
